@@ -23,6 +23,17 @@
             font-family: 'Poppins', sans-serif;
             cursor: none; /* Hide the default cursor */
         }
+        
+        /* Custom Text Selection Highlight */
+        ::selection {
+            background-color: #ffeadb; /* Light Orange */
+            color: #003366; /* Brand Blue for contrast */
+        }
+        ::-moz-selection { /* Firefox */
+            background-color: #ffeadb;
+            color: #003366;
+        }
+
         /* Custom accent colors */
         .bg-accent-orange { background-color: #ff7f50; }
         .text-accent-orange { color: #ff7f50; }
@@ -36,20 +47,20 @@
         /* Custom Cursor Follower */
         #cursor-circle {
             position: fixed;
-            width: 30px;
-            height: 30px;
-            border: 2px solid #ff7f50;
+            width: 35px; /* Increased from 30px */
+            height: 35px; /* Increased from 30px */
+            border: 3px solid #ff7f50; /* Increased from 2px */
             border-radius: 50%;
             pointer-events: none; /* Allows clicking through the element */
             transform: translate(-50%, -50%);
             z-index: 9999;
-            transition: width 0.2s, height 0.2s;
+            transition: width 0.2s, height 0.2s, background-color 0.2s, border-color 0.2s;
         }
         
         /* Style for when hovering over links/buttons */
         body:has(a:hover, button:hover) #cursor-circle {
-            width: 50px;
-            height: 50px;
+            width: 55px; /* Increased size on hover */
+            height: 55px; /* Increased size on hover */
             background-color: rgba(255, 127, 80, 0.2);
         }
 
@@ -58,8 +69,8 @@
             border-radius: 999px; /* Pill shape */
             box-shadow: 0 10px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
             background-color: white;
-            padding-top: 0.5rem;
-            padding-bottom: 0.5rem;
+            padding-top: 0.75rem; 
+            padding-bottom: 0.75rem; 
         }
         #header.scrolled {
             padding-top: 0.5rem;
@@ -76,8 +87,8 @@
     <div id="cursor-circle"></div>
 
     <!-- =========== HEADER =========== -->
-    <header id="header" class="bg-white shadow-md fixed top-0 left-0 right-0 z-50 transition-all duration-300">
-        <div class="container mx-auto px-6 py-4 flex justify-between items-center transition-all duration-300">
+    <header id="header" class="bg-white shadow-md fixed top-0 left-0 right-0 z-50 transition-all duration-700">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center transition-all duration-700">
             <a href="#hero" class="text-3xl font-extrabold text-brand-blue">
                 bahrmado
             </a>
@@ -197,7 +208,7 @@
                     </a>
                 </div>
                  <div class="order-1 md:order-2">
-                    <img src="https://images.pexels.com/photos/7679883/pexels-photo-7679883.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Fashion boutique" class="rounded-lg shadow-2xl w-full h-auto">
+                    <img src="https://images.pexels.com/photos/3184423/pexels-photo-3184423.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="A team putting their hands together in partnership" class="rounded-lg shadow-2xl w-full h-auto object-cover" style="aspect-ratio: 4/3;">
                 </div>
             </div>
         </section>
