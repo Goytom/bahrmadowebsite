@@ -21,7 +21,6 @@
         /* Custom styles to integrate Poppins font */
         body {
             font-family: 'Poppins', sans-serif;
-            cursor: none; /* Hide the default cursor */
         }
         
         /* Custom Text Selection Highlight */
@@ -47,39 +46,68 @@
         /* Custom Cursor Follower */
         #cursor-circle {
             position: fixed;
-            width: 35px;
-            height: 35px;
-            border: 3px solid #ff7f50;
+            width: 25px;
+            height: 25px;
+            background-color: #ff7f50; /* Default solid orange */
+            border: 3px solid transparent;
             border-radius: 50%;
             pointer-events: none;
+            left: 0;
+            top: 0;
             transform: translate(-50%, -50%);
             z-index: 9999;
-            transition: width 0.2s, height 0.2s, background-color 0.2s, border-color 0.2s;
+            transition: width 0.4s, height 0.4s, background-color 0.4s, border-color 0.4s, mix-blend-mode 0.1s, transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+            mix-blend-mode: normal;
+        }
+
+        #cursor-circle.hidden {
+            transform: translate(-50%, -50%) scale(0);
         }
         
         /* Style for when hovering over links/buttons */
-        body:has(a:hover, button:hover) #cursor-circle {
+        #cursor-circle.link-hover {
             width: 55px;
             height: 55px;
-            background-color: rgba(255, 127, 80, 0.2);
+            background-color: transparent;
+            border-color: #ff7f50; /* Orange border appears */
         }
+
+        /* Style for when hovering over text */
+        #cursor-circle.text-hover {
+            width: 80px;
+            height: 80px;
+            background-color: white; /* Color for difference blend mode */
+            mix-blend-mode: difference; /* Inverts color of elements behind it */
+        }
+
 
         /* Header scroll effect styles */
         #header.scrolled {
-            padding-top: 0.5rem;
-            padding-bottom: 0.5rem;
-            background-color: transparent;
-            box-shadow: none;
+            background-color: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+
+            /* Positioning for the floating pill */
+            top: 1rem; /* Adjust distance from top */
+            left: 50%;
+            transform: translateX(-50%);
+            width: 95%;
+            max-width: 1200px;
+            
+            /* Pill shape and appearance */
+            border-radius: 999px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+            border: 2px solid #ff7f50; /* Changed to orange border */
+            
+            /* Remove/reset styles from previous versions */
+            padding-top: 0;
         }
+
         #header.scrolled .container {
-            border-radius: 999px; /* Pill shape */
-            box-shadow: 0 10px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
-            background-color: white;
-            padding-top: 0.75rem; 
-            padding-bottom: 0.75rem; 
-            border: 2px solid #ff7f50; /* Added orange border */
+            /* Adjust padding for the new scrolled state */
+            padding-top: 0.5rem; 
+            padding-bottom: 0.5rem; 
         }
-        
 
     </style>
 </head>
@@ -89,8 +117,8 @@
     <div id="cursor-circle"></div>
 
     <!-- =========== HEADER =========== -->
-    <header id="header" class="bg-white shadow-md fixed top-0 left-0 right-0 z-50 transition-all duration-700">
-        <div class="container mx-auto px-6 py-4 flex justify-between items-center transition-all duration-700">
+    <header id="header" class="bg-white shadow-md fixed top-0 left-0 right-0 z-50 transition-all duration-500">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center transition-all duration-500">
             <a href="#hero" class="text-3xl font-extrabold text-brand-blue">
                 bahrmado
             </a>
@@ -242,18 +270,67 @@
             const header = document.getElementById('header');
             const cursorCircle = document.getElementById('cursor-circle');
 
-            // --- Custom Cursor Logic ---
+            // --- Lagging Cursor Logic ---
+            let mouseX = 0, mouseY = 0;
+            let circleX = 0, circleY = 0;
+            const lag = 0.1; 
+            let lastHoveredElement = null;
+
+            // Update mouse position
             document.addEventListener('mousemove', (e) => {
-                // Use requestAnimationFrame for smoother animation
-                window.requestAnimationFrame(() => {
-                    cursorCircle.style.left = `${e.clientX}px`;
-                    cursorCircle.style.top = `${e.clientY}px`;
-                });
+                mouseX = e.clientX;
+                mouseY = e.clientY;
             });
+            
+            // Hide and show cursor on mouse leaving/entering the window
+            document.body.addEventListener('mouseleave', () => {
+                cursorCircle.classList.add('hidden');
+            });
+             document.body.addEventListener('mouseenter', () => {
+                cursorCircle.classList.remove('hidden');
+            });
+
+            // Animation loop for the lagging effect
+            function animateCursor() {
+                // Calculate distance
+                let distX = mouseX - circleX;
+                let distY = mouseY - circleY;
+                
+                // Move circle a fraction of the distance (this creates the lag)
+                circleX += distX * lag;
+                circleY += distY * lag;
+
+                // Apply the new position
+                cursorCircle.style.left = `${circleX}px`;
+                cursorCircle.style.top = `${circleY}px`;
+                
+                // Element hover logic
+                const currentHoveredElement = document.elementFromPoint(mouseX, mouseY);
+
+                if (currentHoveredElement !== lastHoveredElement) {
+                    cursorCircle.classList.remove('text-hover', 'link-hover');
+                    
+                    if (currentHoveredElement) {
+                        const tagName = currentHoveredElement.tagName.toLowerCase();
+                        const parent = currentHoveredElement.parentElement;
+
+                        if (tagName === 'a' || tagName === 'button' || parent?.tagName.toLowerCase() === 'a' || parent?.tagName.toLowerCase() === 'button') {
+                            cursorCircle.classList.add('link-hover');
+                        } 
+                        else if (['h1', 'h2', 'h3', 'p', 'li', 'span'].includes(tagName)) {
+                             cursorCircle.classList.add('text-hover');
+                        }
+                    }
+                    lastHoveredElement = currentHoveredElement;
+                }
+
+                requestAnimationFrame(animateCursor);
+            }
+            animateCursor();
+
 
             // --- Header Scroll Logic ---
             window.addEventListener('scroll', () => {
-                // Add 'scrolled' class to header after scrolling 50px
                 if (window.scrollY > 50) {
                     header.classList.add('scrolled');
                 } else {
@@ -262,17 +339,10 @@
             });
 
             // --- Mobile Menu Logic ---
-            // Toggle mobile menu
             mobileMenuButton.addEventListener('click', () => {
                 mobileMenu.classList.toggle('hidden');
-                // Toggle icon
-                if (mobileMenu.classList.contains('hidden')) {
-                    mobileMenuIcon.classList.remove('fa-times');
-                    mobileMenuIcon.classList.add('fa-bars');
-                } else {
-                    mobileMenuIcon.classList.remove('fa-bars');
-                    mobileMenuIcon.classList.add('fa-times');
-                }
+                mobileMenuIcon.classList.toggle('fa-bars');
+                mobileMenuIcon.classList.toggle('fa-times');
             });
 
             // Close mobile menu when a link is clicked
@@ -297,7 +367,6 @@
                     const targetElement = document.querySelector(targetId);
                     
                     if(targetElement) {
-                        // Adjust for fixed header height
                         const headerOffset = header.offsetHeight;
                         const elementPosition = targetElement.getBoundingClientRect().top;
                         const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
