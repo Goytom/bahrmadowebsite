@@ -47,11 +47,11 @@
         /* Custom Cursor Follower */
         #cursor-circle {
             position: fixed;
-            width: 35px; /* Increased from 30px */
-            height: 35px; /* Increased from 30px */
-            border: 3px solid #ff7f50; /* Increased from 2px */
+            width: 35px;
+            height: 35px;
+            border: 3px solid #ff7f50;
             border-radius: 50%;
-            pointer-events: none; /* Allows clicking through the element */
+            pointer-events: none;
             transform: translate(-50%, -50%);
             z-index: 9999;
             transition: width 0.2s, height 0.2s, background-color 0.2s, border-color 0.2s;
@@ -59,25 +59,27 @@
         
         /* Style for when hovering over links/buttons */
         body:has(a:hover, button:hover) #cursor-circle {
-            width: 55px; /* Increased size on hover */
-            height: 55px; /* Increased size on hover */
+            width: 55px;
+            height: 55px;
             background-color: rgba(255, 127, 80, 0.2);
         }
 
         /* Header scroll effect styles */
-        #header.scrolled .container {
-            border-radius: 999px; /* Pill shape */
-            box-shadow: 0 10px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
-            background-color: white;
-            padding-top: 0.75rem; 
-            padding-bottom: 0.75rem; 
-        }
         #header.scrolled {
             padding-top: 0.5rem;
             padding-bottom: 0.5rem;
             background-color: transparent;
             box-shadow: none;
         }
+        #header.scrolled .container {
+            border-radius: 999px; /* Pill shape */
+            box-shadow: 0 10px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+            background-color: white;
+            padding-top: 0.75rem; 
+            padding-bottom: 0.75rem; 
+            border: 2px solid #ff7f50; /* Added orange border */
+        }
+        
 
     </style>
 </head>
