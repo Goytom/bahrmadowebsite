@@ -86,27 +86,32 @@
             background-color: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
-
-            /* Positioning for the floating pill */
-            top: 1rem; /* Adjust distance from top */
-            left: 50%;
-            transform: translateX(-50%);
-            width: 95%;
-            max-width: 1200px;
             
-            /* Pill shape and appearance */
+            top: 1rem;
+            left: 0;
+            right: 0;
+            margin-left: auto;
+            margin-right: auto;
+            width: 98%;
+            max-width: 1300px;
+            
             border-radius: 999px;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
-            border: 2px solid #ff7f50; /* Changed to orange border */
-            
-            /* Remove/reset styles from previous versions */
+            border: 2px solid #ff7f50;
+            transform: none;
             padding-top: 0;
         }
 
         #header.scrolled .container {
-            /* Adjust padding for the new scrolled state */
             padding-top: 0.5rem; 
             padding-bottom: 0.5rem; 
+        }
+
+        /* Mobile specific styles */
+        @media (max-width: 768px) {
+            #cursor-circle {
+                display: none; /* Hide the custom cursor on mobile */
+            }
         }
 
     </style>
@@ -117,8 +122,8 @@
     <div id="cursor-circle"></div>
 
     <!-- =========== HEADER =========== -->
-    <header id="header" class="bg-white shadow-md fixed top-0 left-0 right-0 z-50 transition-all duration-500">
-        <div class="container mx-auto px-6 py-4 flex justify-between items-center transition-all duration-500">
+    <header id="header" class="bg-white shadow-md fixed top-0 left-0 right-0 z-50 transition-all duration-700 ease-in-out">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center transition-all duration-700 ease-in-out">
             <a href="#hero" class="text-3xl font-extrabold text-brand-blue">
                 bahrmado
             </a>
